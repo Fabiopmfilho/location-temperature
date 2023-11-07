@@ -11,14 +11,14 @@ interface FooterInformationProps {
 }
 
 const FooterInformation = ({
-  speed = "...",
+  speed = 0,
   sensation = "...",
   humidity = "...",
-  sunrise = "...",
-  sunset = "...",
+  sunrise = 0,
+  sunset = 0,
 }: FooterInformationProps) => {
   return (
-    <div className="flex flex-col bg-white absolute inset-x-0 bottom-0 p-10 rounded-t-3xl">
+    <div className="flex flex-col fixed bottom-0 left-0 bg-white p-10 rounded-t-3xl w-full">
       <div className="flex justify-between mb-4">
         <div className="flex flex-col items-center">
           <p className="text-gray-400">Vento</p>
