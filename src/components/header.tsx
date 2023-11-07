@@ -1,6 +1,13 @@
 import { MenuIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -8,14 +15,27 @@ const Header = () => {
       <div className="flex justify-start">
         <Sheet>
           <SheetTrigger>
-            <Button>
+            <Button size="icon">
               <MenuIcon />
             </Button>
           </SheetTrigger>
+
           <SheetContent side={"left"}>
             <SheetTitle className="mb-4">Outras informações</SheetTitle>
 
-            <Button variant="outline">Cep information</Button>
+            <div className="mt-4 flex flex-col gap-2">
+              <SheetClose asChild>
+                <Link href="/">
+                  <Button variant="outline">Temperatura</Button>
+                </Link>
+              </SheetClose>
+
+              <SheetClose asChild>
+                <Link href="/cep">
+                  <Button variant="outline">Cep</Button>
+                </Link>
+              </SheetClose>
+            </div>
           </SheetContent>
         </Sheet>
       </div>

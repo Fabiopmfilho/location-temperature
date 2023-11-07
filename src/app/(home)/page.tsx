@@ -3,19 +3,18 @@
 import { useState } from "react";
 import Image from "next/image";
 
-import { SearchIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import FooterInformation from "./components/footer-information";
+import SearchBlock from "@/components/search-block";
+import AwaitInformationBlock from "@/components/await-information-block";
 
 const Home = () => {
-  const [cepInput, setCepInput] = useState("");
-  const [location, getLocation] = useState<WeatherProps>();
+  const [cityInput, setCepInput] = useState("");
+  const [location, setLocation] = useState<WeatherProps | null>(null);
 
   const handleSearch = async () => {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cepInput}&units=metric&lang=pt_br&appid=${process.env.NEXT_PUBLIC_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&units=metric&lang=pt_br&appid=${process.env.NEXT_PUBLIC_API_KEY}`
       );
 
       if (!response.ok) {
@@ -23,44 +22,28 @@ const Home = () => {
       }
 
       const data = await response.json();
-      getLocation(data);
+      setLocation(data);
     } catch (error) {
-      console.error(error);
+      console.error("An error occurred while fetching weather data:", error);
     }
   };
 
   return (
     <div className="px-6 h-screen lg:px-10">
       <div className="max-h-[844px] overflow-hidden">
-        <div className="w-full flex flex-col">
-          <div className="flex items-center gap-2 mb-3 mt-3 lg:w-96">
-            <Input
-              type="text"
-              placeholder="Cidade"
-              value={cepInput}
-              onChange={(e) => setCepInput(e.target.value)}
-              className="bg-white"
-            />
-            <Button
-              type="submit"
-              onClick={handleSearch}
-              className="rounded-full w-14 h-14"
-            >
-              <SearchIcon size={24} />
-            </Button>
-          </div>
-        </div>
+        <SearchBlock
+          inputValue={cityInput}
+          handleSearch={handleSearch}
+          setInput={setCepInput}
+          placeholder="Cidade"
+        />
 
         {!location ? (
-          <div className="flex flex-col justify-center items-center gap-4">
-            <Image
-              src="/assets/loading-icon.svg"
-              alt="teste"
-              width={200}
-              height={200}
-            />
-            <p>Aguardando temperatura...</p>
-          </div>
+          <AwaitInformationBlock
+            src="/assets/loading-icon.svg"
+            alt="Aguardando temperatura"
+            description="Aguardando temperatura..."
+          />
         ) : (
           <div className="flex flex-col">
             <p className="font-bold text-lg">{location?.name}</p>
